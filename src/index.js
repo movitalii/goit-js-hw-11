@@ -8,13 +8,13 @@ import { fetchPhotos } from './fetchPhotos';
 let data = '';
 
 function onFormSubmit(event) {
-  event.preventDefault();
-  
+  event.preventDefault();  
+  clearGalleryContainer()
+
   data = event.currentTarget.elements.searchQuery.value;
 
   fetchPhotos(data)
-    .then(data => {
-      console.log(data.hits);
+    .then(data => {      
       return data.hits;
     })
     .then(renderCards)
@@ -23,8 +23,7 @@ function onFormSubmit(event) {
 
 function onLoadMore() {
   fetchPhotos(data)
-    .then(data => {
-      console.log(data.hits);
+    .then(data => {      
       return data.hits;
     })
     .then(renderCards)
@@ -54,4 +53,8 @@ function renderCards(photos) {
         })
         .join("");
         divEl.insertAdjacentHTML('beforeend', markup);
+}
+
+function clearGalleryContainer() {
+  divEl.innerHTML = '';
 }
