@@ -26,7 +26,7 @@ async function fetchPhotos(searchQuery) {
     const response = await axios(axiosOptions);
     query.push(searchQuery);         
     page += 1;
-    const data = await response.json();
+    const data = await response.data;
     return data;   
 };
 
