@@ -23,7 +23,7 @@ let data = '';
 loadMoreBtn.classList.add('is-hidden');
 
 function onFormInput() {
-    submitBtn.removeAttribute('disabled');
+  submitBtn.removeAttribute('disabled');
 }
 
 function onFormSubmit(event) {  
@@ -43,24 +43,43 @@ function onFormSubmit(event) {
 async function getCardToSubmit(data) {
   try {
     const photosInfo = await fetchPhotos(data);
-    const photo = await photosInfo.hits;
-    if (photosInfo.hits.length === 0) {
-      Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-    } else if(photosInfo.hits.length < 40) {
+    const photos = await photosInfo.hits;
+    
+    if (photos.length > 0 && photos.length < 40) {
       Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
       loadMoreBtn.classList.add('is-hidden');
+      submitBtn.setAttribute('disabled', '');
+    }
+    else if (photos.length === 0) {
+      Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
     } else {
+      Notiflix.Notify.info(`Hooray! We found ${photosInfo.totalHits} images.`);
       submitBtn.setAttribute('disabled', '');
       loadMoreBtn.classList.remove('is-hidden');
   }  
-  renderCards(photo);
+  renderCards(photos);
   } catch (error) {
     console.log(error.message);
   }  
 }
 
 async function onLoadMore() {
-  getCardToSubmit(data)
+  loadMoreBtn.classList.add('is-hidden');
+  try {
+    const photosInfo = await fetchPhotos(data);
+    const photos = await photosInfo.hits;
+    
+    if (photos.length > 0 && photos.length < 40) {
+      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+      loadMoreBtn.classList.add('is-hidden');
+      submitBtn.setAttribute('disabled', '');
+    } else {
+      loadMoreBtn.classList.remove('is-hidden');
+    }
+  renderCards(photos);
+  } catch (error) {
+    console.log(error.message);
+  } 
 }
 
 function renderCards(photos) {
