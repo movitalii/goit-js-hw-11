@@ -27,7 +27,7 @@ async function fetchPhotos(searchQuery) {
     query.push(searchQuery);         
     page += 1;
     const data = await response.data;
-    return data;   
+    return data; 
 };
 
 export { fetchPhotos };
