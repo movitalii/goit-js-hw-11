@@ -6,6 +6,9 @@ let page = 1;
 const query = [];
 
 async function fetchPhotos(searchQuery) {
+    if (searchQuery !== query[query.length - 1]) {
+        page = 1;
+    }
     const axiosOptions = {
         method: 'get',
         url: `${BASE_URL}`,
@@ -18,10 +21,7 @@ async function fetchPhotos(searchQuery) {
             page: `${page}`,
             per_page: '40',
         }
-    }
-    if (searchQuery !== query[query.length - 1]) {
-        page = 1;
-    }
+    }    
     
     const response = await axios(axiosOptions);
     query.push(searchQuery);         
